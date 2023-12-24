@@ -1,0 +1,23 @@
+{
+    "name": "citron/citron",
+    "type": "library",
+    "description": "Citron Template Engine",
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/dlsrc/citron"
+        }
+    ],
+    "authors": [
+        {
+            "name": "Dmitry Lebedev",
+            "email": "dl@adios.ru",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.3",
+        "ultra/core": "^1.0.0"
+    }
+}
