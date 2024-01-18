@@ -24,21 +24,21 @@ final class Builder extends \citron\Builder {
 		[$open, $close] = $cfg->global_brackets->apart();
 		$open = $open.$cfg->global_variable->value;
 
-		foreach (\array_keys($this->block) as $i) {
+		foreach (array_keys($this->block) as $i) {
 			$key = 0;
 			$this->ref[$i] = [];
 			$this->ref[$i]['var'] = [];
 			$this->ref[$i]['com'] = [];
 			$this->var[$i] = [];
 
-			if (0 == \preg_match_all($pattern, $this->block[$i], $matches, \PREG_SET_ORDER)) {
+			if (0 == preg_match_all($pattern, $this->block[$i], $matches, PREG_SET_ORDER)) {
 				continue;
 			}
 
-			$split = \preg_split($pattern, $this->block[$i]);
+			$split = preg_split($pattern, $this->block[$i]);
 
 			foreach ($matches as $id => $match) {
-				if ('' != \trim($split[$id])) {
+				if ('' != trim($split[$id])) {
 					$this->stack[$i][$key] = $split[$id];
 					$key++;
 				}
@@ -83,7 +83,7 @@ final class Builder extends \citron\Builder {
 
 			$id++;
 
-			if ('' != \trim($split[$id])) {
+			if ('' != trim($split[$id])) {
 				$this->stack[$i][$key] = $split[$id];
 			}
 		}
@@ -94,8 +94,8 @@ final class Builder extends \citron\Builder {
 	}
 
 	protected function isMapComponent(int $id, string $prefix, bool $leaf): bool {
-		foreach (\array_keys($this->var[$id]) as $name) {
-			if (\str_contains($name, \citron\Component::NS)) {
+		foreach (array_keys($this->var[$id]) as $name) {
+			if (str_contains($name, \citron\Component::NS)) {
 				if ($leaf) {
 					$comp = $prefix.'_leaf_map';
 				}
@@ -222,10 +222,6 @@ final class Builder extends \citron\Builder {
 			'_name'      => $this->names[$i],
 			'_component' => $this->getComposition($i),
 			'_global'    => $this->globs,
-//			'_first'     => '{%',
-//			'_last'      => '}',
-//			'_first'     => $cfg->global_begin,
-//			'_last'      => $cfg->global_end,
 		]);
 	}
 

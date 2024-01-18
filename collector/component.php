@@ -67,7 +67,7 @@ readonly class Component {
 
 		$variant = $snippet->variant ? '^' : '';
 
-		$replace = \str_replace(
+		$replace = str_replace(
 			"\n",
 			"\n".$this->indent,
 			Snippet::makeReplacement(

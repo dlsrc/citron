@@ -8,28 +8,28 @@ namespace citron;
 
 final class Info implements \ultra\Sociable {
 	use \ultra\Informer;
-	private const string VERSION  = '1.0.0';
-	private const string RELEASE  = '';
+	private const string VERSION = '1.0.1';
+	private const string RELEASE = '';
 
 	public static function build(string $template, string|null $markup=null): string {
 		if (self::RELEASE) {
-			$release = '-'.self::VERSION.'-'.\strtolower(Build::name()).'-'.self::RELEASE;
+			$release = '-'.self::VERSION.'-'.strtolower(Build::name()).'-'.self::RELEASE;
 		}
 		else {
-			$release = '-'.self::VERSION.'-'.\strtolower(Build::name()).'-release';
+			$release = '-'.self::VERSION.'-'.strtolower(Build::name()).'-release';
 		}
 
 		if ($markup && 'ROOT' != $markup) {
-			return \substr($template, 0, \strrpos($template, '.'))
+			return substr($template, 0, strrpos($template, '.'))
 			.'-'.$markup.$release.'.php';
 		}
 
-		return \substr($template, 0, \strrpos($template, '.')).$release.'.php';
+		return substr($template, 0, strrpos($template, '.')).$release.'.php';
 	}
 
 	public static function collect(string $template): string {
-		return \substr($template, 0, \strrpos($template, '.')).
+		return substr($template, 0, strrpos($template, '.')).
 			'-'.self::VERSION.
-			\substr($template, \strrpos($template, '.'));
+			substr($template, strrpos($template, '.'));
 	}
 }

@@ -6,6 +6,9 @@
  */
 namespace citron;
 
+use ultra\Error;
+use ultra\SetStateDirectly as Direct;
+
 interface Derivative {
 	public function getOriginal(): Component;
 }
@@ -294,10 +297,10 @@ abstract class Component {
 
 	final public static function error(string $message, Code $code, bool $pro=false): void {
 		if (Mode::Develop->current()) {
-			\ultra\Error::log($message, $code, true);
+			Error::log($message, $code, true);
 		}
 		elseif (Mode::Rebuild->current() || $pro) {
-			\ultra\Error::log($message, $code);
+			Error::log($message, $code);
 		}
 	}
 }
@@ -327,8 +330,8 @@ abstract class Composite extends Component {
 			return true;
 		}
 
-		if (\str_contains($name, Component::NS)) {
-			$branch = \explode(Component::NS, $name);
+		if (str_contains($name, Component::NS)) {
+			$branch = explode(Component::NS, $name);
 			$com = $this;
 
 			foreach ($branch as $n) {
@@ -388,7 +391,7 @@ abstract class Variant extends Composite {
 	}
 
 	final public function __clone(): void {
-		foreach (\array_keys($this->_component) as $name) {
+		foreach (array_keys($this->_component) as $name) {
 			$this->_component[$name] = clone $this->_component[$name];
 		}
 	}
@@ -484,14 +487,14 @@ final class Emulator extends Component {
 	public function force(string $name, string $text): bool {return true;}
 }
 
-#[\ultra\SetStateDirectly]
+#[Direct]
 final class OriginalText extends Text {
 	use InsertionStub;
 	use ReadyText;
 	use Result;
 }
 
-#[\ultra\SetStateDirectly]
+#[Direct]
 final class FixedText extends DependentText implements Derivative {
 	use InsertionStub;
 	use DependentResult;
@@ -499,7 +502,7 @@ final class FixedText extends DependentText implements Derivative {
 	use TextMaster;
 }
 
-#[\ultra\SetStateDirectly]
+#[Direct]
 final class WrappedOriginalText extends Text implements Derivative, Wrapped {
 	use WrappedComponent;
 	use ReadyText;
@@ -508,7 +511,7 @@ final class WrappedOriginalText extends Text implements Derivative, Wrapped {
 	use TextMaster;
 }
 
-#[\ultra\SetStateDirectly]
+#[Direct]
 final class WrappedFixedText extends DependentText implements Derivative, Wrapped {
 	use WrappedComponent;
 	use InsertionStub;
@@ -517,13 +520,13 @@ final class WrappedFixedText extends DependentText implements Derivative, Wrappe
 	use TextMaster;
 }
 
-#[\ultra\SetStateDirectly]
+#[Direct]
 final class Variator extends Variant {
 	use ReadyVariant;
 	use Result;
 }
 
-#[\ultra\SetStateDirectly]
+#[Direct]
 final class WrappedVariator extends Variant implements Derivative, Wrapped {
 	use WrappedComponent;
 	use ReadyVariant;
@@ -532,7 +535,7 @@ final class WrappedVariator extends Variant implements Derivative, Wrapped {
 	public function getOriginal(): Variator {
 		$component = [];
 		
-		foreach (\array_keys($this->_component) as $name) {
+		foreach (array_keys($this->_component) as $name) {
 			$component[$name] = clone $this->_component[$name];
 		}
 

@@ -22,8 +22,8 @@ final class Builder extends \citron\Builder {
 		$refns = $cfg->reference;
 		$comns = \citron\Component::NS;
 
-		foreach (\array_keys($this->block) as $i) {
-			if (0 == \preg_match_all($pattern, $this->block[$i], $matches, \PREG_SET_ORDER)) {
+		foreach (array_keys($this->block) as $i) {
+			if (0 == preg_match_all($pattern, $this->block[$i], $matches, PREG_SET_ORDER)) {
 				continue;
 			}
 
@@ -60,7 +60,7 @@ final class Builder extends \citron\Builder {
 			}
 
 			if (!empty($search)) {
-				$this->block[$i] = \str_replace($search, $replace, $this->block[$i]);
+				$this->block[$i] = str_replace($search, $replace, $this->block[$i]);
 			}
 		}
 	}
@@ -70,8 +70,8 @@ final class Builder extends \citron\Builder {
 	}
 
 	protected function isMapComponent(int $id, string $prefix, bool $leaf): bool {
-		foreach (\array_keys($this->var[$id]) as $name) {
-			if (\str_starts_with($name, \citron\Component::NS)) {
+		foreach (array_keys($this->var[$id]) as $name) {
+			if (str_starts_with($name, \citron\Component::NS)) {
 				if ($leaf) {
 					$comp = $prefix.'_leaf_map';
 				}
@@ -193,10 +193,6 @@ final class Builder extends \citron\Builder {
 			'_name'      => $this->names[$i],
 			'_component' => $this->getComposition($i),
 			'_global'    => $this->globs,
-//			'_first'     => '{%',
-//			'_last'      => '}',
-//			'_first'     => $cfg->global_begin,
-//			'_last'      => $cfg->global_end,
 			]);
 	}
 

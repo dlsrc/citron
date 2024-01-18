@@ -55,9 +55,9 @@ final class Snippet {
 		}
 
 		foreach ($vars as $key => $val) {
-			if (\str_contains($key, '.')) {
-				$path = \explode('.', $key);
-				$size = \count($path) - 1;
+			if (str_contains($key, '.')) {
+				$path = explode('.', $key);
+				$size = count($path) - 1;
 				$com  = self::$_snippet[$name];
 
 				for($i = 0; $i < $size; $i++) {
@@ -94,7 +94,7 @@ final class Snippet {
 				$snippet = Info::build($template, $name);
 			}
 
-			if (\is_readable($snippet) && Mode::Product->current()) {
+			if (is_readable($snippet) && Mode::Product->current()) {
 				self::$_snippet[$name] = include $snippet;
 			}
 			else {
@@ -115,10 +115,10 @@ final class Snippet {
 				$component = Builder::get()->build($tpl);
 
 				if ('ROOT' != $markup) {
-					$type = \explode('.', $markup);
+					$type = explode('.', $markup);
 
 					if ('ROOT' == $type[0]) {
-						\array_shift($type);
+						array_shift($type);
 					}
 
 					foreach ($type as $name) {

@@ -192,24 +192,24 @@ final class Config extends \ultra\Getter {
 	public function __set(string $name, mixed $value): void {
 		switch ($name) {
 		case 'wrap_tag':
-			if (\in_array($value, self::WRAP_TAGS)) {
+			if (in_array($value, self::WRAP_TAGS)) {
 				$this->_property['wrap_tag'] = $value;
 			}
 
 			break;
 
 		case 'wrap_class':
-			if (\preg_match('/^[^\W\d]([\w\.\-\s]*\w)?$/', $value)) {
+			if (preg_match('/^[^\W\d]([\w\.\-\s]*\w)?$/', $value)) {
 				$this->_property['wrap_class'] = $value;
 			}
 
 			break;
 
 		case 'local_gaps':
-			if (\in_array($value, self::TRUE_VALUE)) {
+			if (in_array($value, self::TRUE_VALUE)) {
 				$this->_property['local_gaps'] = true;
 			}
-			elseif (\in_array($value, self::TRUE_VALUE)) {
+			elseif (in_array($value, self::TRUE_VALUE)) {
 				$this->_property['local_gaps'] = false;
 			}
 
@@ -230,10 +230,10 @@ final class Config extends \ultra\Getter {
 			break;
 
 		case 'global_gaps':
-			if (\in_array($value, self::TRUE_VALUE)) {
+			if (in_array($value, self::TRUE_VALUE)) {
 				$this->_property['global_gaps'] = true;
 			}
-			elseif (\in_array($value, self::TRUE_VALUE)) {
+			elseif (in_array($value, self::TRUE_VALUE)) {
 				$this->_property['global_gaps'] = false;
 			}
 
@@ -254,14 +254,14 @@ final class Config extends \ultra\Getter {
 			break;
 		
 		case 'root':
-			if (\in_array($value, self::COMPOSITE_ROOT)) {
+			if (in_array($value, self::COMPOSITE_ROOT)) {
 				$this->_property['root'] = $value;
 			}
 
 			break;
 
 		case 'reference':
-			if (\in_array($value, self::REFERENCE)) {
+			if (in_array($value, self::REFERENCE)) {
 				$this->_property['reference'] = $value;
 			}
 	
@@ -327,7 +327,7 @@ final class Config extends \ultra\Getter {
 		$main = self::get();
 
 		if ($buider) {
-			$start = '('.\preg_quote(Component::NS, '/').'|'.\preg_quote($main->reference, '/').'|'.$start.')';
+			$start = '('.preg_quote(Component::NS, '/').'|'.preg_quote($main->reference, '/').'|'.$start.')';
 			$b_ref = '4';
 		}
 		else {
@@ -396,15 +396,15 @@ final class Config extends \ultra\Getter {
 	}
 
 	public function setup(string &$template, Collector|null $c = null, bool $cut = true): Config {
-		if (0 == \preg_match(self::CONFIG, $template, $match)) {
+		if (0 == preg_match(self::CONFIG, $template, $match)) {
 			return $this->_selectSeed($c);
 		}
 
 		if ($cut) {
-			$template = \str_replace($match[0], '', $template);
+			$template = str_replace($match[0], '', $template);
 		}
 
-		if (0 == \preg_match_all(self::OPTIONS, $match[2], $options, \PREG_SET_ORDER)) {
+		if (0 == preg_match_all(self::OPTIONS, $match[2], $options, PREG_SET_ORDER)) {
 			return $this->_selectSeed($c);
 		}
 

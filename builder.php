@@ -82,7 +82,7 @@ abstract class Builder {
 	}
 
 	public function create(string $filename): Component {
-		if (!$tpl = \file_get_contents($file)) {
+		if (!$tpl = file_get_contents($file)) {
 			return Component::emulate();
 		}
 
@@ -97,7 +97,6 @@ abstract class Builder {
 		}
 
 		$this->types[]  = $this->build->ns().'\\'.Config::get()->root;
-//		$this->types[]  = $this->build->ns().'\\Complex';
 		$this->names[]  = 'ROOT';
 		$this->id[]     = 'ROOT';
 		$this->before[] = '';
@@ -114,7 +113,7 @@ abstract class Builder {
 	protected function prepareGlobalVars(): void {
 		$cfg = Config::get();
 
-		if (0 == \preg_match_all($cfg->patternGlobal(), $this->block[0], $matches, \PREG_SET_ORDER)) {
+		if (0 == preg_match_all($cfg->patternGlobal(), $this->block[0], $matches, PREG_SET_ORDER)) {
 			return;
 		}
 
@@ -136,7 +135,7 @@ abstract class Builder {
 			}
 
 			if ($match[0] != $match[1]) {
-				$this->block[0] = \str_replace(
+				$this->block[0] = str_replace(
 					$match[0],
 					$match[1],
 					$this->block[0]
@@ -146,17 +145,17 @@ abstract class Builder {
 	}
 
 	public static function extractComplexString(string &$attrs): array|null {
-		if (!\str_contains($attrs, '"')) {
+		if (!str_contains($attrs, '"')) {
 			return null;
 		}
 	
 		$complex = [];
 	
-		if (\preg_match_all('/"([^"]*)"/U', $attrs, $match, \PREG_PATTERN_ORDER)) {
-			foreach (\array_keys($match[1]) as $i) {
+		if (preg_match_all('/"([^"]*)"/U', $attrs, $match, PREG_PATTERN_ORDER)) {
+			foreach (array_keys($match[1]) as $i) {
 				$key = '%%'.$i.'%%';
 				$complex[$key] = $match[1][$i];
-				$attrs = \str_replace($match[0][$i], $key, $attrs);
+				$attrs = str_replace($match[0][$i], $key, $attrs);
 			}
 		}
 	
@@ -165,15 +164,15 @@ abstract class Builder {
 
 	private static function _getWrap(string $src, string $tag, string $class): array {
 		$complex = self::extractComplexString($src);
-		$src = \preg_replace('/\s*\=\s*/', '=', \trim($src));
+		$src = preg_replace('/\s*\=\s*/', '=', trim($src));
 	
 		if ('' == $src) {
 			return ['<'.$tag.'>', '</'.$tag.'>'];
 		}
 	
-		$attrs = \preg_split('/\s+/', $src);
+		$attrs = preg_split('/\s+/', $src);
 	
-		if (\in_array($attrs[0], Config::WRAP_TAGS)) {
+		if (in_array($attrs[0], Config::WRAP_TAGS)) {
 			$wrap_tag = $attrs[0];
 			unset($attrs[0]);
 		}
@@ -193,9 +192,9 @@ abstract class Builder {
 				continue;
 			}
 	
-			if (!\str_contains($attr, '=')) {
-				if (\str_starts_with($attr, '.') || \str_starts_with($attr, '+')) {
-					$attr  = \substr($attr, 1);
+			if (!str_contains($attr, '=')) {
+				if (str_starts_with($attr, '.') || str_starts_with($attr, '+')) {
+					$attr  = substr($attr, 1);
 	
 					if (isset($complex[$attr])) {
 						$wrap_attr['class'][] = $complex[$attr];
@@ -207,8 +206,8 @@ abstract class Builder {
 						$wrap_attr['class'][] = $attr;
 					}
 				}
-				elseif (\str_starts_with($attr, '#')) {
-					$attr  = \substr($attr, 1);
+				elseif (str_starts_with($attr, '#')) {
+					$attr  = substr($attr, 1);
 	
 					if (isset($complex[$attr])) {
 						$wrap_attr['id'] = 'id="'.$complex[$attr].'"';
@@ -217,8 +216,8 @@ abstract class Builder {
 						$wrap_attr['id'] = 'id="'.$attr.'"';
 					}
 				}
-				elseif (\str_starts_with($attr, '@')) {
-					$attr  = \substr($attr, 1);
+				elseif (str_starts_with($attr, '@')) {
+					$attr  = substr($attr, 1);
 	
 					if (isset($complex[$attr])) {
 						$wrap_attr['style'] = 'style="'.$complex[$attr].'"';
@@ -227,14 +226,14 @@ abstract class Builder {
 						$wrap_attr['style'] = 'style="'.$attr.'"';
 					}
 				}
-				elseif (\preg_match('/^[\w\-]+$/', $attr)) {
+				elseif (preg_match('/^[\w\-]+$/', $attr)) {
 					$wrap_attr[$attr] = $attr;
 				}
 	
 				continue;
 			}
 	
-			$a = \explode('=', $attr);
+			$a = explode('=', $attr);
 	
 			if ('class' == $a[0]) {
 				if (isset($complex[$a[1]])) {
@@ -276,15 +275,15 @@ abstract class Builder {
 		}
 	
 		if (isset($wrap_attr['class'][0])) {
-			if (\count($wrap_attr['class']) > 1) {
-				$wrap_attr['class'] = 'class="'.\implode(' ', $wrap_attr['class']).'"';
+			if (count($wrap_attr['class']) > 1) {
+				$wrap_attr['class'] = 'class="'.implode(' ', $wrap_attr['class']).'"';
 			}
 			else {
 				$wrap_attr['class'] = 'class="'.$wrap_attr['class'][0].'"';
 			}
 		}
 	
-		return ['<'.$wrap_tag.' '.\implode(' ', $wrap_attr).'>', '</'.$wrap_tag.'>'];
+		return ['<'.$wrap_tag.' '.implode(' ', $wrap_attr).'>', '</'.$wrap_tag.'>'];
 	}
 
 	protected function prepareDependencies(): void {
@@ -299,12 +298,12 @@ abstract class Builder {
 		$k = 1;
 
 		for ($i = 0; isset($this->block[$i]); $i++) {
-			if (0 == \preg_match_all($pattern, $this->block[$i], $matches, \PREG_SET_ORDER)) {
+			if (0 == preg_match_all($pattern, $this->block[$i], $matches, PREG_SET_ORDER)) {
 				continue;
 			}
 
 			foreach ($matches as $match) {
-				$this->block[$k] = \rtrim($match[7]);
+				$this->block[$k] = rtrim($match[7]);
 				$this->names[$k] = $match[3];
 
 				if (isset($match[5]) && '' != $match[5]) {
@@ -347,7 +346,7 @@ abstract class Builder {
 					}
 				}
 
-				$this->block[$i] = \str_replace($match[0], '{'.Component::NS.$match[3].'}', $this->block[$i]);
+				$this->block[$i] = str_replace($match[0], '{'.Component::NS.$match[3].'}', $this->block[$i]);
 				$this->child[$i][] = $k;
 				$k++;
 			}
@@ -381,7 +380,7 @@ abstract class Builder {
 	}
 
 	protected function prepareComponents(): void {
-		for ($i = \array_key_last($this->types); $i >= 0; $i--) {
+		for ($i = array_key_last($this->types); $i >= 0; $i--) {
 			switch ($this->types[$i]) {
 			case $this->component['a_comp']:
 				$this->identifyType($i, 'a');

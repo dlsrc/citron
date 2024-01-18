@@ -6,6 +6,22 @@
  */
 namespace citron\idle;
 
+use citron\Derivative;
+use citron\Wrapped;
+use citron\Childless;
+use citron\Performance;
+use citron\Composite;
+use citron\Component;
+use citron\DependentComponent;
+use citron\IndependentComponent;
+use citron\RootComponent;
+use citron\WrappedComponent;
+use citron\Result;
+use citron\DependentResult;
+use citron\WrappedResult;
+use citron\WrappedDependentResult;
+use ultra\SetStateDirectly as Direct;
+
 trait Sequence {
 	public function __invoke(array $data, array $order=[]): void {
 		if (empty($order)) {
@@ -14,8 +30,8 @@ trait Sequence {
 			}
 		}
 		else {
-			if (!\array_is_list($data)) {
-				$data = \array_values($data);
+			if (!array_is_list($data)) {
+				$data = array_values($data);
 			}
 
 			foreach ($order as $id => $name) {
@@ -35,7 +51,7 @@ trait Insertion {
 
 trait InsertionMap {
 	final public function __set(string $name, int|float|string|array $value): void {
-		if (\is_array($value)) {
+		if (is_array($value)) {
 			foreach ($value as $key => $val) {
 				$this->__set($name.'.'.$key, $val);
 			}
@@ -47,19 +63,19 @@ trait InsertionMap {
 }
 
 trait ReadyComposite {
-	use \citron\IndependentComponent;
+	use IndependentComponent;
 
 	public function ready(): void {
 		$this->notify();
-		$this->_result.= \str_replace($this->_ref, $this->_var, $this->_text);
+		$this->_result.= str_replace($this->_ref, $this->_var, $this->_text);
 	}
 }
 
 trait ReadyLeaf {
-	use \citron\IndependentComponent;
+	use IndependentComponent;
 
 	public function ready(): void {
-		$this->_result.= \str_replace($this->_ref, $this->_var, $this->_text);
+		$this->_result.= str_replace($this->_ref, $this->_var, $this->_text);
 	}
 }
 
@@ -68,7 +84,7 @@ trait DependentCompositeResult {
 		if ($this->_exert) {
 			$this->_exert = false;
 			$this->notify();
-			$this->_result = \str_replace($this->_ref, $this->_var, $this->_text);
+			$this->_result = str_replace($this->_ref, $this->_var, $this->_text);
 		}
 
 		return $this->_result;
@@ -79,7 +95,7 @@ trait DependentLeafResult {
 	final public function getRawResult(): string {
 		if ($this->_exert) {
 			$this->_exert = false;
-			$this->_result = \str_replace($this->_ref, $this->_var, $this->_text);
+			$this->_result = str_replace($this->_ref, $this->_var, $this->_text);
 		}
 
 		return $this->_result;
@@ -90,11 +106,11 @@ trait PerformerMaster {
 	public function getOriginal(): Performer {
 		$component = [];
 
-		foreach (\array_keys($this->_component) as $name) {
+		foreach (array_keys($this->_component) as $name) {
 			$component[$name] = clone $this->_component[$name];
 		}
 
-		if (\str_ends_with(__CLASS__, 'Map')) {
+		if (str_ends_with(__CLASS__, 'Map')) {
 			$class = OriginalCompositeMap::class;
 		}
 		else {
@@ -114,7 +130,7 @@ trait PerformerMaster {
 
 trait LeafMaster {
 	public function getOriginal(): Leaf {
-		if (\str_ends_with(__CLASS__, 'Map')) {
+		if (str_ends_with(__CLASS__, 'Map')) {
 			$class = OriginalLeafMap::class;
 		}
 		else {
@@ -131,9 +147,9 @@ trait LeafMaster {
 	}
 }
 
-abstract class Leaf extends \citron\Component {
+abstract class Leaf extends Component {
 	use Sequence;
-	use \citron\Childless;
+	use Childless;
 
 	protected string $_text;
     protected array  $_var;
@@ -151,9 +167,9 @@ abstract class Leaf extends \citron\Component {
 	}
 }
 
-abstract class Performer extends \citron\Composite {
+abstract class Performer extends Composite {
 	use Sequence;
-	use \citron\Performance;
+	use Performance;
 
 	protected string $_text;
 	protected array  $_var;
@@ -174,7 +190,7 @@ abstract class Performer extends \citron\Composite {
 
 	final public function __unset(string $name): void {
 		if (isset($this->_component[$name])) {
-			$this->_var[\citron\Component::NS.$name] = $this->_component[$name]->getResult();
+			$this->_var[Component::NS.$name] = $this->_component[$name]->getResult();
 			unset($this->_component[$name]);
 		}
 	}
@@ -189,7 +205,7 @@ abstract class Performer extends \citron\Composite {
 
 	final protected function notify(): void {
 		foreach ($this->_component as $component) {
-			$name = \citron\Component::NS.$component->getName();
+			$name = Component::NS.$component->getName();
 			$this->_var[$name] = $component->getResult();
 			$component->update();
 		}
@@ -197,7 +213,7 @@ abstract class Performer extends \citron\Composite {
 }
 
 abstract class DependentLeaf extends Leaf {
-	use \citron\DependentComponent;
+	use DependentComponent;
 
 	public function isReady(): bool {
 		return $this->_exert;
@@ -205,7 +221,7 @@ abstract class DependentLeaf extends Leaf {
 }
 
 abstract class DependentPerformer extends Performer {
-    use \citron\DependentComponent;
+    use DependentComponent;
 
 	public function isReady(): bool {
 		foreach ($this->_component as $component) {
@@ -216,142 +232,142 @@ abstract class DependentPerformer extends Performer {
 	}
 }
 
-#[\ultra\SetStateDirectly]
+#[Direct]
 final class OriginalComposite extends Performer {
 	use Insertion;
 	use ReadyComposite;
-	use \citron\Result;
+	use Result;
 }
 
-#[\ultra\SetStateDirectly]
+#[Direct]
 final class OriginalCompositeMap extends Performer {
 	use InsertionMap;
 	use ReadyComposite;
-	use \citron\Result;
+	use Result;
 }
 
-#[\ultra\SetStateDirectly]
-final class FixedComposite extends DependentPerformer implements \citron\Derivative {
+#[Direct]
+final class FixedComposite extends DependentPerformer implements Derivative {
 	use Insertion;
 	use DependentCompositeResult;
 	use PerformerMaster;
-	use \citron\DependentResult;
+	use DependentResult;
 }
 
-#[\ultra\SetStateDirectly]
-final class FixedCompositeMap extends DependentPerformer implements \citron\Derivative {
+#[Direct]
+final class FixedCompositeMap extends DependentPerformer implements Derivative {
 	use InsertionMap;
 	use DependentCompositeResult;
 	use PerformerMaster;
-	use \citron\DependentResult;
+	use DependentResult;
 }
 
-#[\ultra\SetStateDirectly]
-final class WrappedOriginalComposite extends Performer implements \citron\Derivative, \citron\Wrapped {
+#[Direct]
+final class WrappedOriginalComposite extends Performer implements Derivative, Wrapped {
 	use Insertion;
 	use ReadyComposite;
 	use PerformerMaster;
-	use \citron\WrappedComponent;
-	use \citron\WrappedResult;
+	use WrappedComponent;
+	use WrappedResult;
 }
 
-#[\ultra\SetStateDirectly]
-final class WrappedOriginalCompositeMap extends Performer implements \citron\Derivative, \citron\Wrapped {
+#[Direct]
+final class WrappedOriginalCompositeMap extends Performer implements Derivative, Wrapped {
 	use InsertionMap;
 	use ReadyComposite;
 	use PerformerMaster;
-	use \citron\WrappedComponent;
-	use \citron\WrappedResult;
+	use WrappedComponent;
+	use WrappedResult;
 }
 
-#[\ultra\SetStateDirectly]
-final class WrappedFixedComposite extends DependentPerformer implements \citron\Derivative, \citron\Wrapped {
+#[Direct]
+final class WrappedFixedComposite extends DependentPerformer implements Derivative, Wrapped {
 	use Insertion;
 	use DependentCompositeResult;
 	use PerformerMaster;
-	use \citron\WrappedComponent;
-	use \citron\WrappedDependentResult;
+	use WrappedComponent;
+	use WrappedDependentResult;
 }
 
-#[\ultra\SetStateDirectly]
-final class WrappedFixedCompositeMap extends DependentPerformer implements \citron\Derivative, \citron\Wrapped {
+#[Direct]
+final class WrappedFixedCompositeMap extends DependentPerformer implements Derivative, Wrapped {
 	use InsertionMap;
 	use DependentCompositeResult;
 	use PerformerMaster;
-	use \citron\WrappedComponent;
-	use \citron\WrappedDependentResult;
+	use WrappedComponent;
+	use WrappedDependentResult;
 }
 
-#[\ultra\SetStateDirectly]
+#[Direct]
 final class OriginalLeaf extends Leaf {
 	use Insertion;
 	use ReadyLeaf;
-	use \citron\Result;
+	use Result;
 }
 
-#[\ultra\SetStateDirectly]
+#[Direct]
 final class OriginalLeafMap extends Leaf {
 	use InsertionMap;
 	use ReadyLeaf;
-	use \citron\Result;
+	use Result;
 }
 
-#[\ultra\SetStateDirectly]
-final class FixedLeaf extends DependentLeaf implements \citron\Derivative {
+#[Direct]
+final class FixedLeaf extends DependentLeaf implements Derivative {
 	use Insertion;
 	use DependentLeafResult;
 	use LeafMaster;
-	use \citron\DependentResult;
+	use DependentResult;
 }
 
-#[\ultra\SetStateDirectly]
-final class FixedLeafMap extends DependentLeaf implements \citron\Derivative {
+#[Direct]
+final class FixedLeafMap extends DependentLeaf implements Derivative {
 	use InsertionMap;
 	use DependentLeafResult;
 	use LeafMaster;
-	use \citron\DependentResult;
+	use DependentResult;
 }
 
-#[\ultra\SetStateDirectly]
-final class WrappedOriginalLeaf extends Leaf implements \citron\Derivative, \citron\Wrapped {
+#[Direct]
+final class WrappedOriginalLeaf extends Leaf implements Derivative, Wrapped {
 	use Insertion;
 	use ReadyLeaf;
 	use LeafMaster;
-	use \citron\WrappedComponent;
-	use \citron\WrappedResult;
+	use WrappedComponent;
+	use WrappedResult;
 }
 
-#[\ultra\SetStateDirectly]
-final class WrappedOriginalLeafMap extends Leaf implements \citron\Derivative, \citron\Wrapped {
+#[Direct]
+final class WrappedOriginalLeafMap extends Leaf implements Derivative, Wrapped {
 	use InsertionMap;
 	use ReadyLeaf;
 	use LeafMaster;
-	use \citron\WrappedComponent;
-	use \citron\WrappedResult;
+	use WrappedComponent;
+	use WrappedResult;
 }
 
-#[\ultra\SetStateDirectly]
-final class WrappedFixedLeaf extends DependentLeaf implements \citron\Derivative, \citron\Wrapped {
+#[Direct]
+final class WrappedFixedLeaf extends DependentLeaf implements Derivative, Wrapped {
 	use Insertion;
 	use DependentLeafResult;
 	use LeafMaster;
-	use \citron\WrappedComponent;
-	use \citron\WrappedDependentResult;
+	use WrappedComponent;
+	use WrappedDependentResult;
 }
 
-#[\ultra\SetStateDirectly]
-final class WrappedFixedLeafMap extends DependentLeaf implements \citron\Derivative, \citron\Wrapped {
+#[Direct]
+final class WrappedFixedLeafMap extends DependentLeaf implements Derivative, Wrapped {
 	use InsertionMap;
 	use DependentLeafResult;
 	use LeafMaster;
-	use \citron\WrappedComponent;
-	use \citron\WrappedDependentResult;
+	use WrappedComponent;
+	use WrappedDependentResult;
 }
 
-#[\ultra\SetStateDirectly]
+#[Direct]
 final class Complex extends Performer {
-	use \citron\RootComponent;
-	use \citron\IndependentComponent;
+	use RootComponent;
+	use IndependentComponent;
 
 	protected array  $_global;
 	protected string $_first;
@@ -367,7 +383,7 @@ final class Complex extends Performer {
 }
 
 	public function __set(string $name, int|float|string|array $value): void {
-		if (\is_array($value)) {
+		if (is_array($value)) {
 			foreach ($value as $key => $val) {
 				$this->_var[$name.'.'.$key] = $value;
 			}
@@ -383,11 +399,11 @@ final class Complex extends Performer {
 	public function ready(): void {
 		if ('' == $this->_result) {
 			$this->notify();
-			$this->_result = \str_replace($this->_ref, $this->_var, $this->_text);
+			$this->_result = str_replace($this->_ref, $this->_var, $this->_text);
 			
 			if (!empty($this->_global)) {
-				$this->_result = \str_replace(
-					\array_keys($this->_global),
+				$this->_result = str_replace(
+					array_keys($this->_global),
 					$this->_global,
 					$this->_result
 				);
@@ -405,13 +421,13 @@ final class Complex extends Performer {
 	}
 }
 
-#[\ultra\SetStateDirectly]
+#[Direct]
 final class Document extends Leaf {
 	use InsertionMap;
-	use \citron\RootComponent;
-	use \citron\IndependentComponent;
+	use RootComponent;
+	use IndependentComponent;
 
 	public function ready(): void {
-		$this->_result = \str_replace($this->_ref, $this->_var, $this->_text);
+		$this->_result = str_replace($this->_ref, $this->_var, $this->_text);
 	}
 }

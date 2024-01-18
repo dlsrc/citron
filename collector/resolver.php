@@ -6,6 +6,8 @@
  */
 namespace citron\collector;
 
+use citron\Attribute;
+
 class Resolver {
 	/**
 	 * Имя набора атрибутов.
@@ -68,8 +70,8 @@ class Resolver {
 	 *          FALSE - удалить все явно не затронутые атрибуты классов.
 	 */
 	public function __construct(string $attrs, string $name, bool $asis) {
-		if (\str_contains($name, '.')) {
-			$this->_name = \substr($name, \strrpos($name, '.') + 1);
+		if (str_contains($name, '.')) {
+			$this->_name = substr($name, strrpos($name, '.') + 1);
 		}
 		else {
 			$this->_name = $name;
@@ -127,10 +129,10 @@ class Resolver {
 			$this->_path = $this->_name.'.';
 		}
 
-		$path = \explode('/', $line);
+		$path = explode('/', $line);
 
-		$path[0] = \trim($path[0]);
-		$line = \trim($path[1]);
+		$path[0] = trim($path[0]);
+		$line = trim($path[1]);
 
 		if ('' != $path[0]) {
 			$this->_path = $this->_name.'.'.$path[0].'.';
@@ -145,10 +147,10 @@ class Resolver {
 	 * Извлекает из списка блоки, которые нужно вырезать из компонента
 	 */
 	private function _extractCuts(string $cuttings): void {
-		$cuts = \explode(',', $cuttings);
+		$cuts = explode(',', $cuttings);
 		
 		foreach ($cuts as $cut) {
-			$cut = \trim($cut);
+			$cut = trim($cut);
 		
 			if ('' == $cut) {
 				continue;
@@ -168,23 +170,23 @@ class Resolver {
 			$class = $this->_class($path);
 			$block = $this->_block($path);
 		
-			$this->_class[$block][$class] = \str_replace($this->_mark, $this->_literal, \implode(' ', $attrs));
+			$this->_class[$block][$class] = str_replace($this->_mark, $this->_literal, implode(' ', $attrs));
 		
 			if (isset($attrs['class'])) {
-				if ('class' == \array_key_first($attrs)) {
-					$this->_class[$block][$class] = \str_replace($this->_mark, $this->_literal, \implode(' ', $attrs));
+				if ('class' == array_key_first($attrs)) {
+					$this->_class[$block][$class] = str_replace($this->_mark, $this->_literal, implode(' ', $attrs));
 				}
 				else {
 					$attr_class = $attrs['class'].' ';
 					unset($attrs['class']);
-					$this->_class[$block][$class] = \str_replace($this->_mark, $this->_literal, $attr_class.\implode(' ', $attrs));
+					$this->_class[$block][$class] = str_replace($this->_mark, $this->_literal, $attr_class.implode(' ', $attrs));
 				}
 			}
 			elseif ($this->_asis) {
-				$this->_class[$block][$class] = \str_replace($this->_mark, $this->_literal, 'class="'.$class.'" '.\implode(' ', $attrs));
+				$this->_class[$block][$class] = str_replace($this->_mark, $this->_literal, 'class="'.$class.'" '.implode(' ', $attrs));
 			}
 			else {
-				$this->_class[$block][$class] = \str_replace($this->_mark, $this->_literal, \implode(' ', $attrs));
+				$this->_class[$block][$class] = str_replace($this->_mark, $this->_literal, implode(' ', $attrs));
 			}
 		}
 	}
@@ -200,11 +202,11 @@ class Resolver {
 	 *              по умолчанию для них;
 	 * $attr_map  - карта атрибутов для блоков и классов шаблона, которые блоки содержат.
 	 */
-	private function _extractAttrs(array $attr_line, \citron\Attribute $a, array &$attr_map): void {
-		$block = \explode(',', $attr_line[0]); // $line[0]!!!
+	private function _extractAttrs(array $attr_line, Attribute $a, array &$attr_map): void {
+		$block = explode(',', $attr_line[0]); // $line[0]!!!
 		
-		foreach (\array_keys($block) as $i) {
-			$block[$i] = \trim($block[$i]);
+		foreach (array_keys($block) as $i) {
+			$block[$i] = trim($block[$i]);
 			
 			if ('' == $block[$i]) {
 				unset($block[$i]);
@@ -224,7 +226,7 @@ class Resolver {
 	 * Удаление переменной шаблона
 	 */
 	private function _dropVariable(string $variable): void {
-		$path = \preg_replace('/^\-\s*/', '', $variable);
+		$path = preg_replace('/^\-\s*/', '', $variable);
 		$var   = $this->_class($path);
 		$block = $this->_block($this->_path.$path);
 		$this->_sets[$block][$var] = '';
@@ -234,14 +236,14 @@ class Resolver {
 	 * Присвоение статических значений переменным шаблона
 	 */
 	private function _setVariableValues(string $variables): void {
-		$block_var = \explode('=', $variables);
-		$block_var[1] = \trim($block_var[1]);
+		$block_var = explode('=', $variables);
+		$block_var[1] = trim($block_var[1]);
 		
-		if (\str_contains($block_var[0], ',')) {
-			$vars = \explode(',', $block_var[0]);
+		if (str_contains($block_var[0], ',')) {
+			$vars = explode(',', $block_var[0]);
 		
-			foreach (\array_keys($vars) as $i) {
-				$vars[$i] = \trim($vars[$i]);
+			foreach (array_keys($vars) as $i) {
+				$vars[$i] = trim($vars[$i]);
 						
 				if ('' == $vars[$i]) {
 					unset($vars[$i]);
@@ -250,14 +252,14 @@ class Resolver {
 			
 				$var   = $this->_class($vars[$i]);
 				$block = $this->_block($this->_path.$vars[$i]);
-				$this->_sets[$block][$var] = \str_replace($this->_mark, $this->_literal, $block_var[1]);
+				$this->_sets[$block][$var] = str_replace($this->_mark, $this->_literal, $block_var[1]);
 			}
 		}
 		else {
-			$block_var[0] = \trim($block_var[0]);
+			$block_var[0] = trim($block_var[0]);
 			$var   = $this->_class($block_var[0]);
 			$block = $this->_block($this->_path.$block_var[0]);
-			$this->_sets[$block][$var] = \str_replace($this->_mark, $this->_literal, $block_var[1]);
+			$this->_sets[$block][$var] = str_replace($this->_mark, $this->_literal, $block_var[1]);
 		}
 	}
 
@@ -266,7 +268,7 @@ class Resolver {
 	 */
 	private function _parse(string $attrs): void {
 		// Контейнер, содержащий атрибуты и их значения по умолчанию.
-		$a   = \citron\Attribute::get();
+		$a   = Attribute::get();
 		// TODO: Заменить вызов глобальной конфигурации на конфигурацию
 		// шаблона в котором находится компонент.
 //		$cfg = \citron\Config::get();
@@ -275,26 +277,26 @@ class Resolver {
 		// литералы из строки инструкций.
 		$this->_extractLiterals($attrs);
 
-		$_lines = \explode(';', $attrs);
+		$_lines = explode(';', $attrs);
 		$_map = [];
 
-		foreach (\array_keys($_lines) as $i) {
-			$_lines[$i] = \trim($_lines[$i]);
+		foreach (array_keys($_lines) as $i) {
+			$_lines[$i] = trim($_lines[$i]);
 
 			if ('' == $_lines[$i]) {
 				unset($_lines[$i]);
 				continue;
 			}
 
-			if (\str_contains($_lines[$i], '/')) {
+			if (str_contains($_lines[$i], '/')) {
 				$this->_changePath($_lines[$i]);
 			}
 
-			$line = \explode(':', $_lines[$i]);
-			$line[0] = \trim($line[0]);
+			$line = explode(':', $_lines[$i]);
+			$line[0] = trim($line[0]);
 
 			if (isset($line[1])) {
-				$line[1] = \trim($line[1]);
+				$line[1] = trim($line[1]);
 
 				if ('CUT' == $line[0]) {
 					$this->_extractCuts($line[1]); // $line[1]!!!
@@ -304,10 +306,10 @@ class Resolver {
 				}
 			}
 			else {
-				if (\str_contains($line[0], '=')) {
+				if (str_contains($line[0], '=')) {
 					$this->_setVariableValues($line[0]);
 				}
-				elseif (\str_starts_with($line[0], '-')) {
+				elseif (str_starts_with($line[0], '-')) {
 					$this->_dropVariable($line[0]);
 				}
 			}
@@ -323,14 +325,14 @@ class Resolver {
 	 * а метки-указатели в список $this->_mark.
 	 */
 	private function _extractLiterals(string &$attrs): void {
-		if (\preg_match_all('/"([^"]*)"/U', $attrs, $match, \PREG_PATTERN_ORDER)) {
+		if (preg_match_all('/"([^"]*)"/U', $attrs, $match, PREG_PATTERN_ORDER)) {
 			$this->_literal = $match[1];
 		
-			foreach (\array_keys($this->_literal) as $i) {
+			foreach (array_keys($this->_literal) as $i) {
 				$this->_mark[$i] = '%%'.$i.'%%';
 			}
 		
-			$attrs = \str_replace($match[0], $this->_mark, $attrs);
+			$attrs = str_replace($match[0], $this->_mark, $attrs);
 		}
 	}
 
@@ -339,8 +341,8 @@ class Resolver {
 	 * Например, если путь `Item.CurrentItem.link`, то метод вернет `link`.
 	 */
 	private function _class(string $path): string {
-		if (\str_contains($path, '.')) {
-			$path = \substr($path, \strrpos($path, '.') + 1);
+		if (str_contains($path, '.')) {
+			$path = substr($path, strrpos($path, '.') + 1);
 		}
 
 		return $path;
@@ -351,8 +353,8 @@ class Resolver {
 	 * Например, если путь `Item.CurrentItem.link`, то метод вернет `Item.CurrentItem`.
 	 */
 	private function _block(string $path): string {
-		if (\str_contains($path, '.')) {
-			$path = \substr($path, 0, \strrpos($path, '.'));
+		if (str_contains($path, '.')) {
+			$path = substr($path, 0, strrpos($path, '.'));
 		}
 		else {
 			$path = '';
@@ -371,24 +373,24 @@ class Resolver {
 	 * $class_name   - имя класса (html-атрибут в шаблоне) для которого
 	 *                 составляется карта атрибутов.
 	 */
-	private function _makeAttrsMap(string $attrs_string, \citron\Attribute $a, string $class_name): array {
+	private function _makeAttrsMap(string $attrs_string, Attribute $a, string $class_name): array {
 		$map = [];
-		$attrs_list = \explode(',', $attrs_string);
+		$attrs_list = explode(',', $attrs_string);
 	
 		foreach ($attrs_list as $value) {
-			$v = \explode('=', $value);
+			$v = explode('=', $value);
 
-			$v[0] = \trim($v[0]);
+			$v[0] = trim($v[0]);
 
-			$v[0] = \preg_replace(
+			$v[0] = preg_replace(
 				['/^([*_\.+]+)\s+/', '/^([*_\.]+)\s+/', '/\s+([_\-\.*?!=]+)$/', '/\s+([_\-\.*?!=]+)$/', '/\s+([_\-\.*?!=]+)$/',],
 				['$1', '$1', '$1', '$1', '$1',],
 				$v[0]
 			);
 
-			$v[1] = isset($v[1]) ? \trim($v[1]) : '';
+			$v[1] = isset($v[1]) ? trim($v[1]) : '';
 	
-			if (\preg_match('/^([_\+\-\.\*\?\!]+)$/', $v[0])) {
+			if (preg_match('/^([_\+\-\.\*\?\!]+)$/', $v[0])) {
 				// Класс
 				if ('' == $v[1]) {
 					switch ($v[0]) {
@@ -500,7 +502,7 @@ class Resolver {
 					}
 				}
 			}
-			elseif (\preg_match('/^(_|\.|\+|\*|)([A-Za-z\s\%\d\-]+)(\*|\.|_|\!|\?|[_\.][\?\!]{1,2}|)$/is', $v[0], $match)) {
+			elseif (preg_match('/^(_|\.|\+|\*|)([A-Za-z\s\%\d\-]+)(\*|\.|_|\!|\?|[_\.][\?\!]{1,2}|)$/is', $v[0], $match)) {
 				$attr  = $match[2];
 				$value = $v[1];
 				$def   = isset($a->$attr) ? $a->$attr : '';

@@ -14,7 +14,7 @@ abstract class Unit {
 		public readonly string $filename,
 		public readonly int $config,
 	) {
-		$this->content = \preg_replace(['/\xEF\xBB\xBF/', '/\x0D/',], ['', '',], $this->content);
+		$this->content = preg_replace(['/\xEF\xBB\xBF/', '/\x0D/',], ['', '',], $this->content);
 	}
 
 	public function getContent(): string {
@@ -22,26 +22,26 @@ abstract class Unit {
 	}
 
 	public function importLibs(\citron\Collector $c): array {
-		if (0 == \preg_match_all(
+		if (0 == preg_match_all(
 			'/<!--\s*import\s+(%|(?:\.\.\/)+|\.\/|)([^\s>]+)\s*-->/i',
 			$this->content,
 			$matches,
-			\PREG_PATTERN_ORDER)
+			PREG_PATTERN_ORDER)
 		) {
 			return [];
 		}
 
 		$lib = [];
-		$tpldir = \strtr(\dirname($this->filename), '\\', '/');
+		$tpldir = strtr(dirname($this->filename), '\\', '/');
 		$cfg = $c->getConfig($this->config);
 
-		foreach (\array_keys($matches[0]) as $key) {
+		foreach (array_keys($matches[0]) as $key) {
 			if ($filename = $c->realpath($matches[1][$key], $matches[2][$key], $tpldir)) {
 				if ($c->isLib($filename)) {
 					continue;
 				}
 
-				if (!$content = \file_get_contents($filename)) {
+				if (!$content = file_get_contents($filename)) {
 					continue;
 				}
 
@@ -75,7 +75,7 @@ abstract class Unit {
 			/// Обработка локальных переменных,
 			$pattern = $c_cfg->patternLocal(false); 
 
-			if (\preg_match_all($pattern, $this->content, $matches, \PREG_SET_ORDER)) {
+			if (preg_match_all($pattern, $this->content, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $var) {
 					$isglobal = false;
 
@@ -100,7 +100,7 @@ abstract class Unit {
 			/// Обработка глобальных переменных
 			$pattern = $c_cfg->patternGlobal();
 
-			if (\preg_match_all($pattern, $this->content, $matches, \PREG_SET_ORDER)) {
+			if (preg_match_all($pattern, $this->content, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $var) {
 					if (isset($var[4])) {
 						$var[2] = $var[3].$var[4].$var[3];
@@ -119,7 +119,7 @@ abstract class Unit {
 			return;
 		}
 
-		$this->content = \str_replace($search, $replace, $this->content);
+		$this->content = str_replace($search, $replace, $this->content);
 	}
 }
 
@@ -130,7 +130,7 @@ class Library extends Unit {
 	(?:\/\/)?<!--\s*~\g{3}\s*-->/Uxims';
 
 	public function createSnippets(\citron\Collector $c): void {
-		if (0 == \preg_match_all(self::SNIPPETS, $this->content, $matches, \PREG_SET_ORDER)) {
+		if (0 == preg_match_all(self::SNIPPETS, $this->content, $matches, PREG_SET_ORDER)) {
 			return;
 		}
 
@@ -187,11 +187,11 @@ class Template extends Unit {
 	}
 
 	public function replaceComponent(string $search, string $replace): void {
-		$this->content = \str_replace($search, $replace, $this->content);
+		$this->content = str_replace($search, $replace, $this->content);
 	}
 
 	public function createComponents(\citron\Collector $c, int $template): array {
-		if (0 == \preg_match_all(self::COMPONENT, $this->content, $matches, \PREG_SET_ORDER)) {
+		if (0 == preg_match_all(self::COMPONENT, $this->content, $matches, PREG_SET_ORDER)) {
 			return [];
 		}
 
@@ -323,9 +323,9 @@ class Template extends Unit {
 		}
 
 		if ('' != $component['tuning']) {
-			$com_tuning = \trim($com->tuning);
+			$com_tuning = trim($com->tuning);
 
-			if (\str_ends_with($com_tuning, ';')) {
+			if (str_ends_with($com_tuning, ';')) {
 				$component['tuning'] = $com_tuning.' / '.$component['tuning'];
 			}
 			else {
@@ -357,39 +357,39 @@ class Template extends Unit {
 	}
 
 	public function includeSub(self $sub): void {
-		$this->content = \str_replace(
+		$this->content = str_replace(
 			$sub->search,
-			$sub->indent.\str_replace("\n", "\n".$sub->indent, \trim($sub->content)),
+			$sub->indent.str_replace("\n", "\n".$sub->indent, trim($sub->content)),
 			$this->content
 		);
 	}
 
 	public function dropImportDirective(array $directive): void {
-		$this->content = \str_replace($directive, '', $this->content);
+		$this->content = str_replace($directive, '', $this->content);
 	}
 
 	public function normalizeContent() {
-		$this->content = $this->indent.\str_replace("\n", $this->indent, \trim($this->content));
+		$this->content = $this->indent.str_replace("\n", $this->indent, trim($this->content));
 	}
 
 	private static function _getWrap(string $src, string $tag, string $class): string {
 		$complex = \citron\Builder::extractComplexString($src);
-		$src = \preg_replace('/\s*\=\s*/', '=', \trim($src));
+		$src = preg_replace('/\s*\=\s*/', '=', trim($src));
 	
 		if ('' == $src) {
 			return '<>';
 		}
 	
-		$attrs = \preg_split('/\s+/', $src);
+		$attrs = preg_split('/\s+/', $src);
 	
-		if (\in_array($attrs[0], \citron\Config::WRAP_TAGS)) {
+		if (in_array($attrs[0], \citron\Config::WRAP_TAGS)) {
 			$wrap_tag = $attrs[0];
 			unset($attrs[0]);
 		}
 		else {
 			$wrap_tag = $tag;
 		}
-	
+
 		if (empty($attrs)) {
 			if ($wrap_tag == $tag) {
 				return '<>';
@@ -397,18 +397,18 @@ class Template extends Unit {
 	
 			return '<'.$wrap_tag.'>';
 		}
-	
+
 		$wrap_src = [];
-	
+
 		foreach ($attrs as $attr) {
 			if ('.' == $attr || '+' == $attr) {
 				$wrap_src['class'][]  = $attr;
 				continue;
 			}
-	
-			if (!\str_contains($attr, '=')) {
-				if (\str_starts_with($attr, '.') || \str_starts_with($attr, '+')) {
-					$attr  = \substr($attr, 1);
+
+			if (!str_contains($attr, '=')) {
+				if (str_starts_with($attr, '.') || str_starts_with($attr, '+')) {
+					$attr  = substr($attr, 1);
 	
 					if (isset($complex[$attr])) {
 						$wrap_src['class'][]  = '+"'.$complex[$attr].'"';
@@ -420,8 +420,8 @@ class Template extends Unit {
 						$wrap_src['class'][]  = '+'.$attr;
 					}
 				}
-				elseif (\str_starts_with($attr, '#')) {
-					$attr  = \substr($attr, 1);
+				elseif (str_starts_with($attr, '#')) {
+					$attr  = substr($attr, 1);
 	
 					if (isset($complex[$attr])) {
 						$wrap_src['id']  = '#"'.$complex[$attr].'"';
@@ -430,8 +430,8 @@ class Template extends Unit {
 						$wrap_src['id']  = '#'.$attr;
 					}
 				}
-				elseif (\str_starts_with($attr, '@')) {
-					$attr  = \substr($attr, 1);
+				elseif (str_starts_with($attr, '@')) {
+					$attr  = substr($attr, 1);
 	
 					if (isset($complex[$attr])) {
 						$wrap_src['style']  = '@"'.$complex[$attr].'"';
@@ -440,14 +440,14 @@ class Template extends Unit {
 						$wrap_src['style']  = '@'.$attr;
 					}
 				}
-				elseif (\preg_match('/^[\w\-]+$/', $attr)) {
+				elseif (preg_match('/^[\w\-]+$/', $attr)) {
 					$wrap_src[$attr]  = $attr;
 				}
 	
 				continue;
 			}
 	
-			$a = \explode('=', $attr);
+			$a = explode('=', $attr);
 	
 			if ('class' == $a[0]) {
 				if (isset($complex[$a[1]])) {
@@ -493,8 +493,8 @@ class Template extends Unit {
 		}
 	
 		if (isset($wrap_src['class'][0])) {
-			if (\count($wrap_src['class']) > 1) {
-				$wrap_src['class']  = \implode(' ', $wrap_src['class']);
+			if (count($wrap_src['class']) > 1) {
+				$wrap_src['class']  = implode(' ', $wrap_src['class']);
 			}
 			else {
 				$wrap_src['class']  = $wrap_src['class'][0];
@@ -502,10 +502,10 @@ class Template extends Unit {
 		}
 	
 		if ($wrap_tag == $tag) {
-			return '<'.\implode(' ', $wrap_src).'>';
+			return '<'.implode(' ', $wrap_src).'>';
 		}
 		else {
-			return '<'.$wrap_tag.' '.\implode(' ', $wrap_src).'>';
+			return '<'.$wrap_tag.' '.implode(' ', $wrap_src).'>';
 		}
 	}
 }

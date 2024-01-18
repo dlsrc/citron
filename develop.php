@@ -8,7 +8,7 @@ namespace citron;
 
 trait Develop {
 	private static function develop(string $template): string {
-		if (!\is_readable($template)) {
+		if (!is_readable($template)) {
 			Component::error(Info::message('e_no_tpl', $template), Code::Make, true);
 			return '';
 		}
@@ -26,8 +26,8 @@ trait Develop {
 	private static function build(string $template): string {
 		$file = Info::collect($template);
 
-		if (\is_readable($file)) {
-			if (!$tpl = \file_get_contents($file)) {
+		if (is_readable($file)) {
+			if (!$tpl = file_get_contents($file)) {
 				Component::error(Info::message('e_get_file', $file), Code::Content, true);
 				return '';
 			}

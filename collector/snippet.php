@@ -24,7 +24,7 @@ class Snippet {
 	
 		'child' => '/\{\*(\p{Lu}\w*|\p{Lu}[\w\.]+\w)\}/Usim',
 	];
-	
+
 	public readonly string $name;
 	public readonly string $type;
 	public readonly bool $variant;
@@ -82,12 +82,12 @@ class Snippet {
 //	public function getContent(bool $inner=false): string {
 	public function getContent(): string {
 		$content = $this->_block[$this->_stack[0]]['content'];
-		$count = \count($this->_stack);
+		$count = count($this->_stack);
 
-		while (\preg_match_all(self::PATTERN['child'], $content, $matches, \PREG_SET_ORDER) > 0 && $count > 0) {
+		while (preg_match_all(self::PATTERN['child'], $content, $matches, PREG_SET_ORDER) > 0 && $count > 0) {
 			foreach ($matches as $match) {
 				if (isset($this->_block[$match[1]])) {
-					$content = \str_replace(
+					$content = str_replace(
 						$match[0],
 						self::makeReplacement(
 							name:    $this->_block[$match[1]]['name'],
@@ -135,8 +135,8 @@ class Snippet {
 	public function prepareLib(\citron\Collector $c): void {
 		foreach ($this->_insert as $name => $inserts) {
 			foreach ($inserts as $i => $insert) {
-				if (\str_contains($insert['path'], '.')) {
-					$snippet = \substr($insert['path'], 0, \strpos($insert['path'], '.'));
+				if (str_contains($insert['path'], '.')) {
+					$snippet = substr($insert['path'], 0, strpos($insert['path'], '.'));
 				}
 				else {
 					$snippet = $insert['path'];
@@ -154,10 +154,10 @@ class Snippet {
 
 				if ($insert['inner']) {
 					if ($insert['compact']) {
-						$block['content'] = \trim($block['content']);
+						$block['content'] = trim($block['content']);
 					}
 					else {
-						$block['content'] = \str_replace("\n".$block['indent'], "\n".$insert['indent'], $block['content']);
+						$block['content'] = str_replace("\n".$block['indent'], "\n".$insert['indent'], $block['content']);
 					}
 				}
 				else {
@@ -172,17 +172,17 @@ class Snippet {
 
 					$block['content'] = "\n".$insert['indent'].
 					'<!-- '.$insert['name'].' : '.$insert['type'].' -->'.
-					\str_replace("\n".$block['indent'], "\n".$insert['indent'], $block['content']).
+					str_replace("\n".$block['indent'], "\n".$insert['indent'], $block['content']).
 					'<!-- ~'.$insert['name'].' -->';
 				}
 
-				$this->_block[$name]['content'] = \str_replace(
+				$this->_block[$name]['content'] = str_replace(
 					"\n".$insert['indent'].'[[::'.$i.'::]]',
 					$block['content'],
 					$this->_block[$name]['content']
 				);
 
-				$last = \array_key_last($this->_stack);
+				$last = array_key_last($this->_stack);
 
 				$this->_findInnerBlocks($name);
 
@@ -209,12 +209,12 @@ class Snippet {
 			self::_tuneContent($block, $insert['tuning'], $insert['path'], true);
 		}
 
-		$count = \count($block);
+		$count = count($block);
 
-		while (\preg_match_all(self::PATTERN['child'], $block[$insert['path']]['content'], $matches, \PREG_SET_ORDER) > 0 && $count > 0) {
+		while (preg_match_all(self::PATTERN['child'], $block[$insert['path']]['content'], $matches, PREG_SET_ORDER) > 0 && $count > 0) {
 			foreach ($matches as $match) {
 				if (isset($block[$match[1]])) {
-					$block[$insert['path']]['content'] = \str_replace(
+					$block[$insert['path']]['content'] = str_replace(
 						$match[0],
 						self::makeReplacement(
 							name:    $block[$match[1]]['name'],
@@ -241,12 +241,12 @@ class Snippet {
 			self::_tuneContent($block, $com->tuning, $com->snippet, $com->asis);
 		}
 
-		$count = \count($block);
+		$count = count($block);
 
-		while (\preg_match_all(self::PATTERN['child'], $block[$com->snippet]['content'], $matches, \PREG_SET_ORDER) > 0 && $count > 0) {
+		while (preg_match_all(self::PATTERN['child'], $block[$com->snippet]['content'], $matches, PREG_SET_ORDER) > 0 && $count > 0) {
 			foreach ($matches as $match) {
 				if (isset($block[$match[1]])) {
-					$block[$com->snippet]['content'] = \str_replace(
+					$block[$com->snippet]['content'] = str_replace(
 						$match[0],
 						self::makeReplacement(
 							name:    $block[$match[1]]['name'],
@@ -272,14 +272,14 @@ class Snippet {
 		$cut = $r->cut();
 
 		foreach ($cut as $name) {
-			$parent = \substr($name, 0, \strrpos($name, '.'));
+			$parent = substr($name, 0, strrpos($name, '.'));
 
 			if (!isset($block[$parent])) {
 				continue;
 			}
 
-			$block[$parent]['content'] = \preg_replace(
-				'/\x0A[\x09\x20]*\{\*'.\preg_quote($name).'\}/',
+			$block[$parent]['content'] = preg_replace(
+				'/\x0A[\x09\x20]*\{\*'.preg_quote($name).'\}/',
 				'',
 				$block[$parent]['content']
 			);
@@ -295,8 +295,8 @@ class Snippet {
 			}
 
 			foreach ($set as $var => $val) {
-				$block[$name]['content'] = \preg_replace(
-					$start.\preg_quote($var).$end,
+				$block[$name]['content'] = preg_replace(
+					$start.preg_quote($var).$end,
 					$val,
 					$block[$name]['content']
 				);
@@ -311,7 +311,7 @@ class Snippet {
 			}
 
 			foreach ($attr as $class => $val) {
-				$block[$name]['content'] = \str_replace(
+				$block[$name]['content'] = str_replace(
 					'class="'.$class.'"',
 					$val,
 					$block[$name]['content']
@@ -324,7 +324,7 @@ class Snippet {
 	 * Получение внутренней блочной сруктуры
 	 */
 	private function _findInnerBlocks(string $parent): void {
-		if (\preg_match_all(self::PATTERN['block'], $this->_block[$parent]['content'], $matches, \PREG_SET_ORDER)) {
+		if (preg_match_all(self::PATTERN['block'], $this->_block[$parent]['content'], $matches, PREG_SET_ORDER)) {
 			$this->_block[$parent]['composite'] = true;
 
 			foreach ($matches as $match) {
@@ -341,7 +341,7 @@ class Snippet {
 				$this->_block[$child]['type']    = $match[4];
 				$this->_block[$child]['variant'] = $match[2];
 
-				$this->_block[$parent]['content'] = \str_ireplace($match[0], '{*'.$child.'}', $this->_block[$parent]['content']);
+				$this->_block[$parent]['content'] = str_ireplace($match[0], '{*'.$child.'}', $this->_block[$parent]['content']);
 			}
 		}
 	}
@@ -365,7 +365,7 @@ class Snippet {
 	 *             приминения в новом блоке.
 	 */
 	private function _findInserts(string $parent): void {
-		if (0 == \preg_match_all(self::PATTERN['insert'], $this->_block[$parent]['content'], $matches, \PREG_SET_ORDER)) {
+		if (0 == preg_match_all(self::PATTERN['insert'], $this->_block[$parent]['content'], $matches, PREG_SET_ORDER)) {
 			return;
 		}
 
@@ -437,7 +437,7 @@ class Snippet {
 			}
 		}
 
-		$this->_block[$parent]['content'] = \str_replace($search, $replace, $this->_block[$parent]['content']);
+		$this->_block[$parent]['content'] = str_replace($search, $replace, $this->_block[$parent]['content']);
 	}
 
 	/**

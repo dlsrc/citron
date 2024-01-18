@@ -6,10 +6,10 @@
  */
 namespace citron;
 
-use \citron\collector\Library;
-use \citron\collector\Template;
-use \citron\collector\Snippet;
-use \citron\collector\Component;
+use citron\collector\Library;
+use citron\collector\Template;
+use citron\collector\Snippet;
+use citron\collector\Component;
 
 class Collector {
 	/**
@@ -55,7 +55,7 @@ class Collector {
 	 * Закрытый консруктор
 	 */
 	private function __construct(string $filename, string $content) {
-		$this->root = \strtr(\dirname($filename), '\\', '/');
+		$this->root = strtr(dirname($filename), '\\', '/');
 		$this->_config = [Config::get()->setup($content)];
 
 		$this->_template = [new Template(
@@ -73,7 +73,7 @@ class Collector {
 	 * Создание сборщика шаблона
 	 */
 	public static function make(string $realpath): Collector|null {
-		if (!$content = \file_get_contents($realpath)) {
+		if (!$content = file_get_contents($realpath)) {
 			return null;
 		}
 
@@ -122,7 +122,7 @@ class Collector {
 	public function realpath(string $type, string $file, string $tpldir): string {
 		if ('%' == $type) {
 			// Абсолютный путь корневорго шаблона + подключаемый файл.
-			if (\file_exists($this->root.'/'.$file)) {
+			if (file_exists($this->root.'/'.$file)) {
 				return $this->root.'/'.$file;
 			}
 	
@@ -131,18 +131,18 @@ class Collector {
 
 		if ('./' == $type) {
 			// Абсолютный путь текущего файла + подключаемый файл.
-			if (\file_exists($tpldir.'/'.$file)) {
+			if (file_exists($tpldir.'/'.$file)) {
 				return $tpldir.'/'.$file;
 			}
 	
 			return '';
 		}
 	
-		if ($count = \substr_count($type, '../')) {
+		if ($count = substr_count($type, '../')) {
 			// Абсолютный путь текущего файла + подключаемый файл.
-			$file = \strtr(\dirname($tpldir, $count), '\\', '/').'/'.$file;
+			$file = strtr(dirname($tpldir, $count), '\\', '/').'/'.$file;
 	
-			if (\file_exists($file)) {
+			if (file_exists($file)) {
 				return $file;
 			}
 	
@@ -151,15 +151,15 @@ class Collector {
 		
 		// Далее, путь к файлу может быть указан как абсолютный,
 		// либо как относительный для текущего файла.
-		if ($path = \realpath($file)) {
+		if ($path = realpath($file)) {
 			// realpath() как и file_exists() выполняет проверку существования файла,
 			// Если реальный путь к файлу установлен и файл существует,
 			// значит был указан абсолютный файл.
-			return \strtr($path, '\\', '/');
+			return strtr($path, '\\', '/');
 		}
 
 		// Либо нужно попробовать достроить путь от папки текущего файла (аналог ./).
-		if (\file_exists($tpldir.'/'.$file)) {
+		if (file_exists($tpldir.'/'.$file)) {
 			return $tpldir.'/'.$file;
 		}
 	
@@ -247,11 +247,11 @@ class Collector {
 	}
 
 	public function getConfigId(Config $config): int {
-		$id = \array_search($config, $this->_config, true);
+		$id = array_search($config, $this->_config, true);
 						
 		if (false === $id) {
 			$this->_config[] = $config;
-			$id = \array_key_last($this->_config);
+			$id = array_key_last($this->_config);
 		}
 
 		return $id;
@@ -269,17 +269,17 @@ class Collector {
 			$tpl = $this->_template[$i];
 			$cfg = $this->_config[$tpl->config];
 
-			if (\preg_match_all($pattern, $tpl->getContent(), $matches, \PREG_SET_ORDER)) {
-				$tpldir  = \strtr(\dirname($tpl->filename), '\\', '/');
+			if (preg_match_all($pattern, $tpl->getContent(), $matches, PREG_SET_ORDER)) {
+				$tpldir  = strtr(dirname($tpl->filename), '\\', '/');
 
 				// дети
 				foreach ($matches as $match) {
 					if ($file = $this->realpath($match[2], $match[3], $tpldir)) {
-						if (\in_array($file, $_files)) {
+						if (in_array($file, $_files)) {
 							continue;
 						}
 
-						if (!$content = \file_get_contents($file)) {
+						if (!$content = file_get_contents($file)) {
 							continue;
 						}
 
@@ -351,9 +351,9 @@ class Collector {
 			return;
 		}
 		
-		$libs = \array_keys($this->_library);
+		$libs = array_keys($this->_library);
 
-		for ($i = \array_key_last($libs); $i >= 0; $i--) {
+		for ($i = array_key_last($libs); $i >= 0; $i--) {
 			$lib = $this->_library[$libs[$i]];
 			$lib->createSnippets($this);
 		}
@@ -411,7 +411,7 @@ class Collector {
 	 * Сборка шаблона в единое целое, в одну строку.
 	 */
 	private function _collectTemplate(): string {
-		for ($i = \array_key_last($this->_template); $i >= 0; $i--) {
+		for ($i = array_key_last($this->_template); $i >= 0; $i--) {
 			$sub = $this->_template[$i];
 
 			if ($sub->isNotParent()) {

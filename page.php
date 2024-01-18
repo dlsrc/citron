@@ -15,7 +15,7 @@ final class Page {
 		if (null == self::$_page) {
 			$page = Info::build($template);
 
-			if (\is_readable($page) && Mode::Product->current()) {
+			if (is_readable($page) && Mode::Product->current()) {
 				self::$_page = include $page;
 			}
 			else {
@@ -45,7 +45,7 @@ final class Page {
 	}
 
 	public static function exists(): bool {
-		return \is_object(self::$_page);
+		return is_object(self::$_page);
 	}
 
 	public static function child(string $name): bool {
