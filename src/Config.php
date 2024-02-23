@@ -298,7 +298,7 @@ final class Config extends Getter {
 			return $this;
 		}
 
-		return match (Seed::now()) {
+		return match (Seed::main()) {
 			Seed::Node => $this,
 			Seed::Root => $c->getConfig(),
 			Seed::Main => self::get(),

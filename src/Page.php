@@ -17,11 +17,11 @@ final class Page {
 		if (null == self::$_page) {
 			$page = Info::build($template);
 
-			if (is_readable($page) && Mode::Product->current()) {
+			if (is_readable($page) && Mode::Product()) {
 				self::$_page = include $page;
 			}
 			else {
-				if (Mode::Develop->current()) {
+				if (Mode::Develop()) {
 					$tpl = self::develop($template);
 				}
 				else {

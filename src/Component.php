@@ -63,10 +63,10 @@ abstract class Component {
 	}
 
 	final public static function error(string $message, Code $code, bool $pro=false): void {
-		if (Mode::Develop->current()) {
+		if (Mode::Develop()) {
 			Error::log($message, $code, true);
 		}
-		elseif (Mode::Rebuild->current() || $pro) {
+		elseif (Mode::Rebuild() || $pro) {
 			Error::log($message, $code);
 		}
 	}

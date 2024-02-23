@@ -10,6 +10,7 @@ use Citron\Collector\Library;
 use Citron\Collector\Template;
 use Citron\Collector\Snippet;
 use Citron\Collector\Component;
+use Citron\Config\Seed;
 
 class Collector {
 	/**
@@ -306,7 +307,7 @@ class Collector {
 	 */
 	private function _importLibs(): void {
 		// Библиотеки всегда составляются на основе глобальной конфигурации
-		$seed = Seed::Main->prefer();
+		$seed = Seed::Main->setMain();
 
 		$libs = [];
 
@@ -326,7 +327,7 @@ class Collector {
 			}
 		}
 
-//		$seed->prefer();
+//		$seed->setMain();
 	}
 
 	private function _normalizeVariables() {

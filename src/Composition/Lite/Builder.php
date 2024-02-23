@@ -6,6 +6,7 @@
  */
 namespace Citron\Lite;
 
+use Citron\Build;
 use Citron\Builder as Super;
 use Citron\Component;
 use Citron\Config;
@@ -13,7 +14,7 @@ use Citron\Config;
 final class Builder extends Super {
 	protected array $stack;
 
-	protected function __construct(Super $build) {
+	protected function __construct(Build $build) {
 		parent::__construct($build);
 		$this->stack  = [];
 	}

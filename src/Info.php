@@ -16,10 +16,10 @@ final class Info implements Sociable {
 
 	public static function build(string $template, string|null $markup=null): string {
 		if (self::RELEASE) {
-			$release = '-'.self::VERSION.'-'.strtolower(Build::name()).'-'.self::RELEASE;
+			$release = '-'.self::VERSION.'-'.strtolower(Build::getMainName()).'-'.self::RELEASE;
 		}
 		else {
-			$release = '-'.self::VERSION.'-'.strtolower(Build::name()).'-release';
+			$release = '-'.self::VERSION.'-'.strtolower(Build::getMainName()).'-release';
 		}
 
 		if ($markup && 'ROOT' != $markup) {

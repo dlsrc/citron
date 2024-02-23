@@ -34,7 +34,7 @@ abstract class Builder {
 	protected array $after;
 
 	public static function get(): Builder {
-		$build = Build::now();
+		$build = Build::main();
 		$class = $build->builder();
 		return new $class($build);
 	}

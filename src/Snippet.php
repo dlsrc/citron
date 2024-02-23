@@ -96,11 +96,11 @@ final class Snippet {
 				$snippet = Info::build($template, $name);
 			}
 
-			if (is_readable($snippet) && Mode::Product->current()) {
+			if (is_readable($snippet) && Mode::Product()) {
 				self::$_snippet[$name] = include $snippet;
 			}
 			else {
-				if (Mode::Develop->current()) {
+				if (Mode::Develop()) {
 					$tpl = self::develop($template, $name);
 				}
 				else {

@@ -6,6 +6,7 @@
  */
 namespace Citron\Idle;
 
+use Citron\Build;
 use Citron\Builder as Super;
 use Citron\Component;
 use Citron\Config;
@@ -14,7 +15,7 @@ final class Builder extends Super {
 	private array $var;
 
 	protected function prepareStacks(): void {
-		$cfg   = Super::get();
+		$cfg = Config::get();
 
 		[$global_open, $global_close] = $cfg->global_brackets->apart();
 		$global_open = $global_open.$cfg->global_variable->value;
