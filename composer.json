@@ -1,6 +1,6 @@
 {
     "name": "citron/citron",
-    "type": "library",
+    "type": "project",
     "description": "Citron Template Engine",
     "license": "MIT",
     "repositories": [
@@ -16,8 +16,16 @@
             "role": "Developer"
         }
     ],
+    "autoload": {
+        "psr-4" : {
+            "Citron\\Fast" : "src/Composition/Fast",
+            "Citron\\Idle" : "src/Composition/Idle",
+            "Citron\\Lite" : "src/Composition/Lite",
+            "Citron\\" : "src/"
+        }
+    },
     "require": {
         "php": ">=8.3",
-        "ultra/core": "^1.0.1"
+        "ultra/core": "^1.0.2"
     }
 }
