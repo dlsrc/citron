@@ -4,11 +4,10 @@
  * This source code is part of the Citron template engine.
  * Please see the LICENSE file for copyright and licensing information.
  */
-namespace Citron\Collector;
+namespace Citron\Compilation;
 
-use Citron\Builder;
-use Citron\Collector;
 use Citron\Config;
+use Citron\Builder;
 
 class Library extends Unit {
 	private const string SNIPPETS = '/^(?:\/\/)?<!--\s*(%|)\s*(\^|)(\p{Lu}\w*)

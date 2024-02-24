@@ -6,6 +6,7 @@
  */
 namespace Citron;
 
+use Citron\Compilation\Collector;
 use Ultra\IO;
 
 trait Develop {

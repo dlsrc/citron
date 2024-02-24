@@ -10,6 +10,7 @@ use Citron\Config\Brackets;
 use Citron\Config\GlobalVariable;
 use Citron\Config\LocalVariable;
 use Citron\Config\Seed;
+use Citron\Compilation\Collector;
 use Ultra\Container\Getter;
 
 final class Config extends Getter {

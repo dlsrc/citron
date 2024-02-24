@@ -4,9 +4,7 @@
  * This source code is part of the Citron template engine.
  * Please see the LICENSE file for copyright and licensing information.
  */
-namespace Citron\Collector;
-
-use Citron\Collector;
+namespace Citron\Compilation;
 
 readonly class Component {
 	public function __construct(

@@ -4,12 +4,9 @@
  * This source code is part of the Citron template engine.
  * Please see the LICENSE file for copyright and licensing information.
  */
-namespace Citron;
+namespace Citron\Compilation;
 
-use Citron\Collector\Library;
-use Citron\Collector\Template;
-use Citron\Collector\Snippet;
-use Citron\Collector\Component;
+use Citron\Config;
 use Citron\Config\Seed;
 
 class Collector {
