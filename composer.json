@@ -18,9 +18,10 @@
     ],
     "autoload": {
         "psr-4" : {
-            "Citron\\Fast" : "src/Composition/Fast",
-            "Citron\\Idle" : "src/Composition/Idle",
-            "Citron\\Lite" : "src/Composition/Lite",
+            "Citron\\Main\\" : "src/Composition/",
+            "Citron\\Fast\\" : "src/Composition/Fast/",
+            "Citron\\Idle\\" : "src/Composition/Idle/",
+            "Citron\\Lite\\" : "src/Composition/Lite/",
             "Citron\\" : "src/"
         }
     },
