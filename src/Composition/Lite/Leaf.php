@@ -6,8 +6,8 @@
  */
 namespace Citron\Lite;
 
-use Citron\Component;
-use Citron\Childless;
+use Citron\Main\Component;
+use Citron\Main\Childless;
 
 abstract class Leaf extends Component {
 	use Sequence;

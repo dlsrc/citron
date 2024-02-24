@@ -6,10 +6,10 @@
  */
 namespace Citron\Lite;
 
-use Citron\Derivative;
-use Citron\Wrapped;
-use Citron\WrappedComponent;
-use Citron\WrappedResult;
+use Citron\Main\Derivative;
+use Citron\Main\Wrapped;
+use Citron\Main\WrappedComponent;
+use Citron\Main\WrappedResult;
 use Ultra\Export\SetStateDirectly;
 
 #[SetStateDirectly]

@@ -6,8 +6,8 @@
  */
 namespace Citron\Compilation;
 
-use Citron\Builder;
 use Citron\Config;
+use Citron\Main\Builder;
 
 class Template extends Unit {
 	private const string COMPONENT = '/^([\x09\x20]*)\[\s*

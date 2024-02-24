@@ -7,11 +7,11 @@
 namespace Citron\Idle;
 
 use Citron\Build;
-use Citron\Builder as Super;
-use Citron\Component;
 use Citron\Config;
+use Citron\Main\Builder as Main;
+use Citron\Main\Component;
 
-final class Builder extends Super {
+final class Builder extends Main {
 	private array $var;
 
 	protected function prepareStacks(): void {

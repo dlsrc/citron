@@ -6,8 +6,8 @@
  */
 namespace Citron\Lite;
 
-use Citron\IndependentComponent;
-use Citron\RootComponent;
+use Citron\Main\IndependentComponent;
+use Citron\Main\RootComponent;
 use Ultra\Export\SetStateDirectly;
 
 #[SetStateDirectly]

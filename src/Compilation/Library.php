@@ -7,7 +7,6 @@
 namespace Citron\Compilation;
 
 use Citron\Config;
-use Citron\Builder;
 
 class Library extends Unit {
 	private const string SNIPPETS = '/^(?:\/\/)?<!--\s*(%|)\s*(\^|)(\p{Lu}\w*)

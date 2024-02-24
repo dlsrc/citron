@@ -6,9 +6,9 @@
  */
 namespace Citron\Idle;
 
-use Citron\Component;
-use Citron\Composite;
-use Citron\Performance;
+use Citron\Main\Component;
+use Citron\Main\Composite;
+use Citron\Main\Performance;
 
 abstract class Performer extends Composite {
 	use Sequence;

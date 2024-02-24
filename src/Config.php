@@ -11,6 +11,7 @@ use Citron\Config\GlobalVariable;
 use Citron\Config\LocalVariable;
 use Citron\Config\Seed;
 use Citron\Compilation\Collector;
+use Citron\Main\Component;
 use Ultra\Container\Getter;
 
 final class Config extends Getter {

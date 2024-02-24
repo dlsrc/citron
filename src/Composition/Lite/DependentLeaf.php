@@ -6,7 +6,7 @@
  */
 namespace Citron\Lite;
 
-use Citron\DependentComponent;
+use Citron\Main\DependentComponent;
 
 abstract class DependentLeaf extends Leaf {
 	use DependentComponent;

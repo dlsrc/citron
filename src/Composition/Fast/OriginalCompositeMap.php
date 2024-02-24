@@ -6,7 +6,7 @@
  */
 namespace Citron\Fast;
 
-use Citron\Result;
+use Citron\Main\Result;
 use Ultra\Export\SetStateDirectly;
 
 #[SetStateDirectly]

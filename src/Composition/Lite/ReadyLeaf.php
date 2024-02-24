@@ -6,7 +6,7 @@
  */
 namespace Citron\Lite;
 
-use Citron\IndependentComponent;
+use Citron\Main\IndependentComponent;
 
 trait ReadyLeaf {
 	use IndependentComponent;

@@ -6,8 +6,8 @@
  */
 namespace Citron\Fast;
 
-use Citron\Derivative;
-use Citron\DependentResult;
+use Citron\Main\Derivative;
+use Citron\Main\DependentResult;
 use Ultra\Export\SetStateDirectly;
 
 #[SetStateDirectly]

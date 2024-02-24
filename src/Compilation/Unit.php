@@ -6,7 +6,6 @@
  */
 namespace Citron\Compilation;
 
-use Citron\Builder;
 use Citron\Config;
 
 abstract class Unit {

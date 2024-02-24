@@ -6,7 +6,7 @@
  */
 namespace Citron\Lite;
 
-use Citron\DependentComponent;
+use Citron\Main\DependentComponent;
 
 abstract class DependentPerformer extends Performer {
 	use DependentComponent;
