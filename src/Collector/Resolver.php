@@ -6,8 +6,6 @@
  */
 namespace Citron\Collector;
 
-use Citron\TagsAttribute;
-
 class Resolver {
 	/**
 	 * Имя набора атрибутов.
