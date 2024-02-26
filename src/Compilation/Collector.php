@@ -7,7 +7,7 @@
 namespace Citron\Compilation;
 
 use Citron\Config;
-use Citron\Config\Seed;
+use Citron\Seed;
 
 class Collector {
 	/**

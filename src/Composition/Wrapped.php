@@ -4,7 +4,7 @@
  * This source code is part of the Citron template engine.
  * Please see the LICENSE file for copyright and licensing information.
  */
-namespace Citron\Main;
+namespace Citron;
 
 interface Wrapped {
 	public function unwrap(): void;

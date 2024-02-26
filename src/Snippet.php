@@ -6,12 +6,7 @@
  */
 namespace Citron;
 
-use Citron\Main\Builder;
-use Citron\Main\Component;
-use Citron\Main\Derivative;
-use Citron\Main\Wrapped;
-
-use Ultra\Export\Exporter;
+use Ultra\Exporter;
 
 final class Snippet {
 	use Develop;

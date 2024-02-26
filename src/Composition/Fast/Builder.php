@@ -7,11 +7,11 @@
 namespace Citron\Fast;
 
 use Citron\Build;
+use Citron\Builder as General;
 use Citron\Config;
-use Citron\Main\Builder as Main;
-use Citron\Main\Component;
+use Citron\Component;
 
-final class Builder extends Main {
+final class Builder extends General {
 	protected array $stack;
 	protected array $var;
 

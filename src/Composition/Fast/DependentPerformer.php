@@ -6,7 +6,7 @@
  */
 namespace Citron\Fast;
 
-use Citron\Main\DependentComponent;
+use Citron\DependentComponent;
 
 abstract class DependentPerformer extends Performer {
 	use DependentComponent;

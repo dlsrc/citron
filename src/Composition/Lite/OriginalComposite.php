@@ -6,8 +6,8 @@
  */
 namespace Citron\Lite;
 
-use Citron\Main\Result;
-use Ultra\Export\SetStateDirectly;
+use Citron\Result;
+use Ultra\SetStateDirectly;
 
 #[SetStateDirectly]
 final class OriginalComposite extends Performer {

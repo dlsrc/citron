@@ -6,13 +6,8 @@
  */
 namespace Citron;
 
-use Citron\Config\Brackets;
-use Citron\Config\GlobalVariable;
-use Citron\Config\LocalVariable;
-use Citron\Config\Seed;
 use Citron\Compilation\Collector;
-use Citron\Main\Component;
-use Ultra\Container\Getter;
+use Ultra\Getter;
 
 final class Config extends Getter {
 	final public const array WRAP_TAGS = [

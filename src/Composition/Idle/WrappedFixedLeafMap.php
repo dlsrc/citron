@@ -6,11 +6,11 @@
  */
 namespace Citron\Idle;
 
-use Citron\Main\Derivative;
-use Citron\Main\Wrapped;
-use Citron\Main\WrappedComponent;
-use Citron\Main\WrappedDependentResult;
-use Ultra\Export\SetStateDirectly;
+use Citron\Derivative;
+use Citron\Wrapped;
+use Citron\WrappedComponent;
+use Citron\WrappedDependentResult;
+use Ultra\SetStateDirectly;
 
 #[SetStateDirectly]
 final class WrappedFixedLeafMap extends DependentLeaf implements Derivative, Wrapped {

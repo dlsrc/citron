@@ -6,7 +6,7 @@
  */
 namespace Citron\Lang\it;
 
-use Ultra\Container\Getter;
+use Ultra\Getter;
 
 final class Info extends Getter {
 	protected function initialize(): void {

@@ -6,11 +6,11 @@
  */
 namespace Citron;
 
-use Ultra\Dominant\UnitEnum as Dominant;
-use Ultra\Dominant\UnitCase;
+use Ultra\Enum\Dominant;
+use Ultra\Enum\DominantCase;
 
 enum Mode implements Dominant {
-	use UnitCase;
+	use DominantCase;
 
 	/**
 	 * Основной (производственный) режим работы.

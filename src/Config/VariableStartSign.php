@@ -4,7 +4,7 @@
  * This source code is part of the Citron template engine.
  * Please see the LICENSE file for copyright and licensing information.
  */
-namespace Citron\Config;
+namespace Citron;
 
 interface VariableStartSign {
 	public function start(): string;

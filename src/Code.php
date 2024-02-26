@@ -6,7 +6,7 @@
  */
 namespace Citron;
 
-use Ultra\Result\Condition;
+use Ultra\Condition;
 
 enum Code: int implements Condition {
 	// VALUE RANGE 100 - 149

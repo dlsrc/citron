@@ -6,9 +6,9 @@
  */
 namespace Citron\Lite;
 
-use Citron\Main\IndependentComponent;
-use Citron\Main\RootComponent;
-use Ultra\Export\SetStateDirectly;
+use Citron\IndependentComponent;
+use Citron\RootComponent;
+use Ultra\SetStateDirectly;
 
 #[SetStateDirectly]
 final class Complex extends Performer {

@@ -6,7 +6,7 @@
  */
 namespace Citron\Compilation;
 
-use Ultra\Container\Getter;
+use Ultra\Getter;
 
 /**
  * Атрибуты HTML5 и их значения по умолчанию

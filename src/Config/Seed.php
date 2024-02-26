@@ -4,16 +4,16 @@
  * This source code is part of the Citron template engine.
  * Please see the LICENSE file for copyright and licensing information.
  */
-namespace Citron\Config;
+namespace Citron;
 
-use Ultra\Dominant\UnitEnum as Dominant;
-use Ultra\Dominant\UnitCase;
+use Ultra\Enum\Dominant;
+use Ultra\Enum\DominantCase;
 
 // Источник конфигурации по умолчанию,
 // то есть какую конфигурацию будет использовать текущий шаблон,
 // если нет никаких дополнительных указаний в самом шаблоне.
 enum Seed implements Dominant {
-	use UnitCase;
+	use DominantCase;
 	// Конфигурация предка
 	case Node;
 	// Конфигурация корневого шаблона

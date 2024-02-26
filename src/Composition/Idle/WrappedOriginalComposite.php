@@ -6,11 +6,11 @@
  */
 namespace Citron\Idle;
 
-use Citron\Main\Derivative;
-use Citron\Main\Wrapped;
-use Citron\Main\WrappedComponent;
-use Citron\Main\WrappedResult;
-use Ultra\Export\SetStateDirectly;
+use Citron\Derivative;
+use Citron\Wrapped;
+use Citron\WrappedComponent;
+use Citron\WrappedResult;
+use Ultra\SetStateDirectly;
 
 #[SetStateDirectly]
 final class WrappedOriginalComposite extends Performer implements Derivative, Wrapped {

@@ -6,9 +6,9 @@
  */
 namespace Citron\Fast;
 
-use Citron\Main\Derivative;
-use Citron\Main\DependentResult;
-use Ultra\Export\SetStateDirectly;
+use Citron\Derivative;
+use Citron\DependentResult;
+use Ultra\SetStateDirectly;
 
 #[SetStateDirectly]
 final class FixedLeafMap extends DependentLeaf implements Derivative {

@@ -4,10 +4,7 @@
  * This source code is part of the Citron template engine.
  * Please see the LICENSE file for copyright and licensing information.
  */
-namespace Citron\Main;
-
-use Citron\Build;
-use Citron\Config;
+namespace Citron;
 
 abstract class Builder {
 	abstract protected function prepareStacks(): void;
