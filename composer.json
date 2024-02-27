@@ -1,5 +1,6 @@
 {
     "name": "citron/citron",
+    "version": "1.0.2",
     "type": "project",
     "description": "Citron Template Engine",
     "license": "MIT",
