@@ -34,7 +34,10 @@ final class Page {
 					return Component::emulate();
 				}
 
-				self::$_page = Builder::get()->build($tpl);
+				if (!self::$_page = Builder::get()?->build($tpl)) {
+					return Component::emulate();
+				}
+
 				(new Exporter($page))->save(self::$_page);
 			}
 		}

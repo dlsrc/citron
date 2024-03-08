@@ -114,7 +114,10 @@ final class Snippet {
 
 				$cfg = Config::get();
 				$cfg->root = 'OriginalComposite';
-				$component = Builder::get()->build($tpl);
+				
+				if (!$component = Builder::get()?->build($tpl)) {
+					return Component::emulate();
+				}
 
 				if ('ROOT' != $markup) {
 					$type = explode('.', $markup);

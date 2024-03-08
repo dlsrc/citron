@@ -33,10 +33,15 @@ abstract class Builder {
 	protected array $before;
 	protected array $after;
 
-	public static function get(): Builder {
+	public static function get(): Builder|null {
 		$build = Build::main();
-		$class = $build->builder();
-		return new $class($build);
+
+		if ($build instanceof Build) {
+			$class = $build->builder();
+			return new $class($build);
+		}
+
+		return null;
 	}
 
 	protected function __construct(Build $build) {
@@ -82,7 +87,7 @@ abstract class Builder {
 	}
 
 	public function create(string $filename): Component {
-		if (!$tpl = file_get_contents($file)) {
+		if (!$tpl = file_get_contents($filename)) {
 			return Component::emulate();
 		}
 
