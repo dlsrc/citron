@@ -6,9 +6,6 @@
  */
 namespace Citron;
 
-use Citron\Code;
-use Citron\Info;
-
 trait Performance {
 	final public function __call(string $name, array $data): bool {
 		if (!isset($this->_component[$name])) {

@@ -6,8 +6,6 @@
  */
 namespace Citron;
 
-use Citron\Code;
-use Citron\Mode;
 use Ultra\Error;
 
 abstract class Component {

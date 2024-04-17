@@ -6,9 +6,6 @@
  */
 namespace Citron;
 
-use Citron\Code;
-use Citron\Info;
-
 abstract class Variant extends Composite {
 	protected string $_variant;
 

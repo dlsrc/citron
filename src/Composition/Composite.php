@@ -6,9 +6,6 @@
  */
 namespace Citron;
 
-use Citron\Code;
-use Citron\Info;
-
 abstract class Composite extends Component {
 	protected array $_component;
 

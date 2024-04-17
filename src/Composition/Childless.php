@@ -6,9 +6,6 @@
  */
 namespace Citron;
 
-use Citron\Code;
-use Citron\Info;
-
 trait Childless {
 	final public function __call(string $name, array $value): bool {
 		return false;
