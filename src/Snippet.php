@@ -138,7 +138,7 @@ final class Snippet {
 				}
 
 				self::$_snippet[$name] = $component;
-				(new Exporter($snippet))->save(self::$_snippet[$name]);
+				new Exporter($snippet)->save(self::$_snippet[$name]);
 				$cfg->root = 'Complex';
 			}
 		}
