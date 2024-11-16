@@ -26,7 +26,7 @@ abstract class Performer extends Composite {
 	}
 
 	public function __clone(): void {
-		foreach (\array_keys($this->_component) as $name) {
+		foreach (array_keys($this->_component) as $name) {
 			$this->_component[$name] = clone $this->_component[$name];
 		}
 	}
