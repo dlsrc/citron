@@ -38,7 +38,7 @@ final class Page {
 					return Component::emulate();
 				}
 
-				(new Exporter($page))->save(self::$_page);
+				new Exporter($page)->save(self::$_page);
 			}
 		}
 

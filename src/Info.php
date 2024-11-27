@@ -11,7 +11,7 @@ use Ultra\Generic\Sociable;
 
 final class Info implements Sociable {
 	use Informer;
-	private const string VERSION = '1.0.0';
+	private const string VERSION = '1.1.0-beta-1';
 	private const string RELEASE = '';
 
 	public static function build(string $template, string|null $markup=null): string {
