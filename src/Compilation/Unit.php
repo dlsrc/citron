@@ -6,8 +6,6 @@
  */
 namespace Citron\Compilation;
 
-use Citron\Config;
-
 abstract class Unit {
 	abstract public function dropImportDirective(array $directive);
 
@@ -25,7 +23,7 @@ abstract class Unit {
 
 	public function importLibs(Collector $c): array {
 		if (0 == preg_match_all(
-			'/<!--\s*import\s+(%|(?:\.\.\/)+|\.\/|)([^\s>]+)\s*-->/i',
+			'/<!--\s*(?:import|required)\s+(%|(?:\.\.\/)+|\.\/|@citron|)([^\s>]+)\s*-->/i',
 			$this->content,
 			$matches,
 			PREG_PATTERN_ORDER)
@@ -38,7 +36,7 @@ abstract class Unit {
 		$cfg = $c->getConfig($this->config);
 
 		foreach (array_keys($matches[0]) as $key) {
-			if ($filename = $c->realpath($matches[1][$key], $matches[2][$key], $tpldir)) {
+			if ($filename = $c->path->realpath($matches[1][$key], $matches[2][$key], $tpldir)) {
 				if ($c->isLib($filename)) {
 					continue;
 				}
