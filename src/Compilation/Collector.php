@@ -326,21 +326,7 @@ class Collector {
 
 //		$seed->setMain();
 	}
-/*
-	private function _normalizeVariables() {
-		foreach ($this->_template as $tpl) {
-			$tpl->prepareVariables($this);
-		}
 
-		foreach ($this->_library as $tpl) {
-			$tpl->prepareVariables($this);
-		}
-
-		foreach ($this->_config as $cfg) {
-			$cfg->equalizeVariables();
-		}
-	}
-*/
 	/**
 	 * Выделить примитивы и сниппеты для каждой библиотеки.
 	 */
