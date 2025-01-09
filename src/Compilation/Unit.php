@@ -61,7 +61,7 @@ abstract class Unit {
 		$this->dropImportDirective($matches[0]);
 		return $lib;
 	}
-
+/*
 	public function prepareVariables(Collector $c): void {
 		$b_cfg = Config::get();
 		$c_cfg = $c->getConfig($this->config);
@@ -123,4 +123,5 @@ abstract class Unit {
 
 		$this->content = str_replace($search, $replace, $this->content);
 	}
+*/
 }

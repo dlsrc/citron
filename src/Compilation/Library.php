@@ -20,28 +20,14 @@ class Library extends Unit {
 		}
 
 		foreach ($matches as $match) {
-			if ($c->isSnippet($match[2])) {
+			if ($c->isSnippet($match[3])) {
 				continue;
-			}
-
-			if ('%' == $match[1]) {
-				$primitive = true;
-			}
-			else {
-				$primitive = false;
-			}
-
-			if ('^' == $match[2]) {
-				$variant = true;
-			}
-			else {
-				$variant = false;
 			}
 
 			$c->addSnippet(new Snippet(
 				name: $match[3],
-				primitive: $primitive,
-				variant: $variant,
+				primitive: '%' == $match[1],
+				variant: '^' == $match[2],
 				content: $match[5],
 				type: $match[4],
 			));
