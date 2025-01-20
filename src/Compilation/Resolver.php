@@ -168,7 +168,7 @@ class Resolver {
 			$class = $this->_class($path);
 			$block = $this->_block($path);
 		
-			$this->_class[$block][$class] = str_replace($this->_mark, $this->_literal, implode(' ', $attrs));
+			//$this->_class[$block][$class] = str_replace($this->_mark, $this->_literal, implode(' ', $attrs));
 		
 			if (isset($attrs['class'])) {
 				if ('class' == array_key_first($attrs)) {
