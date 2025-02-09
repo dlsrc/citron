@@ -112,7 +112,11 @@ abstract class Builder {
 		$this->prepareStacks();
 		$this->prepareComponents();
 
-		return $this->block[0];
+		if ($this->block[0] instanceof Component) {
+			return $this->block[0];
+		}
+
+		return Component::emulate();
 	}
 
 	protected function prepareGlobalVars(): void {

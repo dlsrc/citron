@@ -14,34 +14,7 @@ final class Page {
 	private static Component|null $_page = null;
 
 	public static function make(string $template): Component {
-		if (null == self::$_page) {
-			$page = Info::build($template);
-
-			if (is_readable($page) && Mode::Product()) {
-				self::$_page = include $page;
-			}
-			else {
-				if (Mode::Develop()) {
-					$tpl = self::develop($template);
-				}
-				else {
-					$tpl = self::build($template);
-				}
-
-				if (!$tpl) {
-					// Ошибку регистрируют методы
-					// Page::build и Page::develop (см. trait Develop)
-					return Component::emulate();
-				}
-
-				if (!self::$_page = Builder::get()?->build($tpl)) {
-					return Component::emulate();
-				}
-
-				new Exporter($page)->save(self::$_page);
-			}
-		}
-
+		self::$_page ??= self::_make($template);
 		return self::$_page;
 	}
 
@@ -68,5 +41,37 @@ final class Page {
 
 		Component::error(Info::message('e_no_page'), Code::Open, true);
 		return Component::emulate();
+	}
+
+	private static function _make(string $template): Component {
+		$file = Info::build($template);
+
+		if (is_readable($file) && Mode::Product()) {
+			$page = include $file;
+
+			if ($page instanceof Component) {
+				return $page;
+			}
+		}
+		
+		if (Mode::Develop()) {
+			$tpl = self::develop($template);
+		}
+		else {
+			$tpl = self::build($template);
+		}
+
+		if (!$tpl) {
+			// Ошибку регистрируют методы
+			// Page::build и Page::develop (см. trait Develop)
+			return Component::emulate();
+		}
+
+		if (!$page = Builder::get()?->build($tpl)) {
+			return Component::emulate();
+		}
+
+		new Exporter($file)->save($page);
+		return $page;
 	}
 }
