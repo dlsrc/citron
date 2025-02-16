@@ -1,6 +1,6 @@
 {
     "name": "citron/citron",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "type": "project",
     "description": "Citron Template Engine",
     "license": "MIT",
@@ -27,6 +27,6 @@
     },
     "require": {
         "php": ">=8.4",
-        "ultra/core": "^2.0.0"
+        "ultra/core": "^2.0.1"
     }
 }
